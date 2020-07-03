@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>图片编辑器开放平台demo</title>
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/2.3.2/hint.min.css">
+    <link rel="stylesheet" href="css/iconfonts.min.css">
+    <link rel="stylesheet" href="css/h2.css">
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        .editor {
+            width: 800px;
+            height: 800px;
+        }
+
+        .test-function {
+            position: absolute;
+            top: 20px;
+            left: 820px;
+        }
+
+        .test-function button {
+            height: 40px;
+            background: #1593ff;
+            color: #fff;
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        a {
+            text-decoration: underline;
+            color: #1593ff;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="editor">
+        <div id="app"></div>
+    </div>
+    <div class="test-function">
+        <button onclick="addImage()">添加图片组件</button>
+        <button onclick="addText()">添加文字组件</button>
+        <br /><br />
+        <button onclick="setBackgroundColor()">设置背景纯色</button>
+        <button onclick="setBackgroundColor2()">设置背景渐变色</button>
+        <button onclick="clearBackground()">清空背景</button>
+        <br /><br />
+        <button onclick="clearElement()">清空画布组件</button>
+        <br /><br />
+        <button onclick="exportJpg()">导出jpeg</button><button onclick="exportPng()">导出png</button>
+        <br /><br />
+        快捷键说明
+        <br /><br />
+        Backspace、Delete 删除元素
+        <br /><br />
+        Ctrl + G 组合选中元素（支持嵌套组合）
+        <br /><br />
+        Ctrl + Shift + G 解散组合
+        <br /><br />
+        <a target="_blank" href="https://heyanpeng.github.io/resume/">关于我</a>
+    </div>
+    <script src="js/vue.runtime.min.js"></script>
+    <script src="js/vuex.min.js"></script>
+    <script src="js/h2.js"></script>
+    <script>
+        const editor = new h2.Editor({
+            target: 'app',
+            drawingBoard: {
+                width: 600,
+                height: 600,
+            },
+        })
+        const image = new h2.Image({
+            width: 200,
+            height: 150,
+            x: 300,
+            y: 70,
+            rotate: 0,
+            display: 'block',
+            opacity: 1,
+            src: 'http://res1.eqh5.com/3b0a09ef6a216fac1c10b16d144de64a?imageMogr2/auto-orient',
+        })
+        editor.addElement(image)
+        const text = new h2.Text({
+            content: '图片编辑器开放平台',
+            width: '500px',
+            color: '#1593ff',
+            fontSize: '38px',
+            x: 0,
+            y: 300,
+            fontFamily: '',
+            src: '',
+            lineHeight: '1.6',
+            backgroundColor: '#ff0',
+            rotate: 45,
+        })
+        editor.addElement(text)
+
+        // 添加图片
+        function addImage() {
+            const image = new h2.Image({
+                width: 200,
+                height: 150,
+                x: getRandom(0, 400),
+                y: getRandom(0, 450),
+                rotate: getRandom(0, 359),
+                opacity: 1,
+                src: 'http://res1.eqh5.com/3b0a09ef6a216fac1c10b16d144de64a?imageMogr2/auto-orient',
+            })
+            editor.addElement(image)
+        }
+
+        // 添加文字
+        function addText() {
+            const text = new h2.Text({
+                content: '图片编辑器开放平台',
+                width: '500px',
+                color: getColor(),
+                fontSize: '38px',
+                x: getRandom(0, 100),
+                y: getRandom(0, 600),
+                fontFamily: '',
+                src: '',
+                lineHeight: '1.6',
+                backgroundColor: getColor(),
+                rotate: getRandom(0, 359),
+            })
+            editor.addElement(text)
+        }
+
+        // 设置背景纯色
+        function setBackgroundColor() {
+            editor.setBackgroundColor(getColor())
+        }
+
+        // 设置背景渐变色
+        function setBackgroundColor2() {
+            editor.setBackgroundColor([getColor(), getColor()])
+        }
+
+        // 清空背景
+        function clearBackground() {
+            editor.clearBackground()
+        }
+
+        // 清空画布组件
+        function clearElement() {
+            editor.clearElements()
+        }
+
+        // 导出jpg
+        function exportJpg() {
+            editor.exportImg({ fileName: '图片编辑器开放平台测试导出', fileType: 'jpeg', mutil: 1 })
+        }
+
+        // 导出png
+        function exportPng() {
+            editor.exportImg({ fileName: '图片编辑器开放平台测试导出', fileType: 'png', mutil: 1 })
+        }
+
+        // 获取范围内随机整数
+        function getRandom(min, max) {
+            return parseInt(Math.random() * (max - min + 1) + min, 10)
+        }
+
+        // 获取随机16进制颜色
+        function getColor() {
+            var r = Math.floor(Math.random() * 256)
+            var g = Math.floor(Math.random() * 256)
+            var b = Math.floor(Math.random() * 256)
+            var color = '#' + r.toString(16) + g.toString(16) + b.toString(16)
+            return color
+        }
+    </script>
+</body>
+
+</html>
