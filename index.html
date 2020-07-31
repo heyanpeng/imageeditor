@@ -48,6 +48,8 @@
     <div class="test-function">
         <button onclick="addImage()">添加图片组件</button>
         <button onclick="addText()">添加文字组件</button>
+        <button onclick="addDate()">添加日期组件</button>
+        <button onclick="add3DText()">添加3D文字组件</button>
         <br /><br />
         <button onclick="setBackgroundColor()">设置背景纯色</button>
         <button onclick="setBackgroundColor2()">设置背景渐变色</button>
@@ -55,7 +57,7 @@
         <br /><br />
         <button onclick="clearElement()">清空画布组件</button>
         <br /><br />
-        <button onclick="exportJpg()">导出jpeg</button><button onclick="exportPng()">导出png</button>
+        <button onclick="exportJpg()">导出jpeg(coding)</button><button onclick="exportPng()">导出png(coding)</button>
         <br /><br />
         快捷键说明
         <br /><br />
@@ -64,11 +66,14 @@
         Ctrl + G 组合选中元素（支持嵌套组合）
         <br /><br />
         Ctrl + Shift + G 解散组合
-        <br /><br />
-        <a target="_blank" href="https://heyanpeng.github.io/resume/">关于我</a>
+        <br /><br /><br /><br />
+        <a target="_blank" href="https://heyanpeng.github.io/resume/">关于我</a><br /><br />
+        update 2020.7.31
     </div>
     <script src="js/vue.runtime.min.js"></script>
     <script src="js/vuex.min.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src="js/axios.min.js"></script>
     <script src="js/h2.js"></script>
     <script>
         const editor = new h2.Editor({
@@ -78,7 +83,7 @@
                 height: 600,
             },
         })
-        const image = new h2.Image({
+        const image = new h2.H2Image({
             width: 200,
             height: 150,
             x: 300,
@@ -89,8 +94,8 @@
             src: 'http://res1.eqh5.com/3b0a09ef6a216fac1c10b16d144de64a?imageMogr2/auto-orient',
         })
         editor.addElement(image)
-        const text = new h2.Text({
-            content: '图片编辑器开放平台',
+        const text = new h2.H2Text({
+            content: '作图就用易企秀轻设计',
             width: '500px',
             color: '#1593ff',
             fontSize: '38px',
@@ -103,10 +108,25 @@
             rotate: 45,
         })
         editor.addElement(text)
+        const date = new h2.H2Date({
+            width: '220px',
+            color: 'red',
+            fontSize: '38px',
+            x: 0,
+            y: 350,
+            fontFamily: '',
+            src: '',
+            lineHeight: '1.6',
+            backgroundColor: 'blue',
+            rotate: 50,
+        })
+        editor.addElement(date)
+
+        add3DText()
 
         // 添加图片
         function addImage() {
-            const image = new h2.Image({
+            const image = new h2.H2Image({
                 width: 200,
                 height: 150,
                 x: getRandom(0, 400),
@@ -120,8 +140,8 @@
 
         // 添加文字
         function addText() {
-            const text = new h2.Text({
-                content: '图片编辑器开放平台',
+            const text = new h2.H2Text({
+                content: '作图就用易企秀轻设计',
                 width: '500px',
                 color: getColor(),
                 fontSize: '38px',
@@ -133,6 +153,29 @@
                 backgroundColor: getColor(),
                 rotate: getRandom(0, 359),
             })
+            editor.addElement(text)
+        }
+
+        // 添加日期
+        function addDate() {
+            const text = new h2.H2Date({
+                width: '220px',
+                color: getColor(),
+                fontSize: '38px',
+                x: getRandom(0, 100),
+                y: getRandom(0, 600),
+                fontFamily: '',
+                src: '',
+                lineHeight: '1.6',
+                backgroundColor: getColor(),
+                rotate: getRandom(0, 359),
+            })
+            editor.addElement(text)
+        }
+
+        // 添加3D文字
+        function add3DText() {
+            const text = new h2.H2TextThreeD({})
             editor.addElement(text)
         }
 
@@ -158,12 +201,14 @@
 
         // 导出jpg
         function exportJpg() {
-            editor.exportImg({ fileName: '图片编辑器开放平台测试导出', fileType: 'jpeg', mutil: 1 })
+            return
+            editor.exportImg({ fileName: '轻设计编辑器开放平台测试导出', fileType: 'jpeg', mutil: 1 })
         }
 
         // 导出png
         function exportPng() {
-            editor.exportImg({ fileName: '图片编辑器开放平台测试导出', fileType: 'png', mutil: 1 })
+            return
+            editor.exportImg({ fileName: '轻设计编辑器开放平台测试导出', fileType: 'png', mutil: 1 })
         }
 
         // 获取范围内随机整数
